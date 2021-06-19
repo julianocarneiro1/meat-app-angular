@@ -9,13 +9,23 @@ export class ShoppingCartService {
     }
 
     addItem(item: MenuItem) {
-        //testa se id do item recebido é igual a id que já está na lista do carrinho
         let foundItem = this.items.find((mItem) => mItem.menuItem.id === item.id);
-        if(foundItem) { //se encontrar id igual, incrementa quantidade
-            foundItem.quantity = foundItem.quantity + 1;
-        } else { //se não encontrar na lista, adiciona novo item
+        if(foundItem) {
+            this.increaseQty(foundItem);
+        } else {
             this.items.push(new CartItem(item));
         }
+    }
+
+    increaseQty(item: CartItem) {
+        item.quantity = item.quantity + 1;    
+    }
+
+    decreaseQty(item: CartItem) {
+        item.quantity = item.quantity - 1;   
+        if (item.quantity === 0) {
+            this.removeItem(item);
+        } 
     }
 
     removeItem(item: CartItem) {
